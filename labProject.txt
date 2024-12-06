@@ -1,0 +1,54 @@
+select title from topic where topic_id=(select topic_id from news where news_id=(select news_id from feedback where comments like'%amazing%'));
+select title from topic where topic_id=(select topic_id from news where news_id=(select news_id from feedback where comments like'%good%'));
+
+
+
+find the titles of topic where reaction is good
+
+SELECT t.title
+FROM topic t
+ JOIN news n ON n.topic_id = t.topic_id
+ JOIN feedback f ON f.news_id = n.news_id
+WHERE f.reaction = 'good';
+
+
+
+set serveroutput on
+DECLARE 
+   
+   comm feedback.comments%type;
+   tp topic.title%type;
+
+BEGIN
+   FOR x IN 51..60  
+   LOOP
+      select comments into comm from feedback where sub_id=x;
+      if comm='good' 
+        then
+	select title into tp from topic where topic_id=(select topic_id from news where news_id=(select news_id from feedback where sub_id=x));  
+ DBMS_OUTPUT.PUT_LINE('Comments good given on : ' || tp); 
+        end if;
+   END LOOP;
+  
+   END;
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
